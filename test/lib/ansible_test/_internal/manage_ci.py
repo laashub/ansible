@@ -76,7 +76,7 @@ class ManageWindowsCI:
         name = 'windows_%s' % self.core_ci.version
 
         env = ansible_environment(self.core_ci.args)
-        cmd = ['ansible', '-m', 'win_ping', '-i', '%s,' % name, name, '-e', ' '.join(extra_vars)]
+        cmd = ['ansible', '-m', 'ansible.windows.win_ping', '-i', '%s,' % name, name, '-e', ' '.join(extra_vars)]
 
         for dummy in range(1, 120):
             try:
@@ -213,7 +213,7 @@ class ManagePosixCI:
                 raise NotImplementedError('provider %s has not been implemented' % self.core_ci.provider)
         elif self.core_ci.platform == 'osx':
             self.become = ['sudo', '-in', 'PATH=/usr/local/bin:$PATH']
-        elif self.core_ci.platform == 'rhel':
+        elif self.core_ci.platform == 'rhel' or self.core_ci.platform == 'centos':
             self.become = ['sudo', '-in', 'bash', '-c']
         elif self.core_ci.platform in ['aix', 'ibmi']:
             self.become = []
